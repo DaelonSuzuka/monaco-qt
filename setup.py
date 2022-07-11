@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 
 
-import pathlib
+from pathlib import Path
 from setuptools import setup, find_packages
 
 
-here = pathlib.Path(__file__).parent
+here = Path(__file__).parent
 
 
 DESCRIPTION = "The Monaco editor as a Qt Widget"
@@ -26,11 +26,12 @@ CLASSIFIERS = [
 
 setup(
     name="monaco-qt",
-    version="0.1.0",
+    version="0.1.1",
     packages=find_packages(),
     install_requires=[
         'QtPy',
     ],
+    package_data={'monaco': ['*.js', '*.html', 'monaco-editor/**']},
     include_package_data=True,
     # setup_requires=[],
     # tests_require=[],
