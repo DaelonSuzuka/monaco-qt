@@ -9,9 +9,17 @@ class BaseBridge(QObject):
     initialized = Signal()
     sendDataChanged = Signal(str, str)
 
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
+        self.active = False
+        self.queue = []
+
     def send_to_js(self, name, value):
-        data = json.dumps(value)
-        self.sendDataChanged.emit(name, data)
+        if self.active:
+            data = json.dumps(value)
+            self.sendDataChanged.emit(name, data)
+        else:
+            self.queue.append((name, value))
 
     @Slot(str, str)
     def receive_from_js(self, name, value):
@@ -21,6 +29,11 @@ class BaseBridge(QObject):
     @Slot()
     def init(self):
         self.initialized.emit()
+        self.active = True
+        for name, value in self.queue:
+            self.send_to_js(name, value)
+
+        self.queue.clear()
 
 
 class EditorBridge(BaseBridge):
@@ -29,7 +42,7 @@ class EditorBridge(BaseBridge):
     themeChanged = Signal()
 
     def __init__(self, parent=None):
-        super(EditorBridge, self).__init__(parent)
+        super().__init__(parent=parent)
         self._value = ""
         self._language = ""
         self._theme = ""
@@ -63,7 +76,7 @@ class EditorBridge(BaseBridge):
 
 
 class MonacoWidget(QWebEngineView):
-    text_changed = Signal(str)
+    textChanged = Signal(str)
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
@@ -78,7 +91,7 @@ class MonacoWidget(QWebEngineView):
         self._bridge = EditorBridge()
         channel.registerObject("bridge", self._bridge)
 
-        self._bridge.valueChanged.connect(lambda: self.text_changed.emit(self._bridge.value))
+        self._bridge.valueChanged.connect(lambda: self.textChanged.emit(self._bridge.value))
 
     def text(self):
         return self._bridge.value
@@ -86,5 +99,8 @@ class MonacoWidget(QWebEngineView):
     def setText(self, text):
         self._bridge.send_to_js("value", text)
 
-    def set_language(self, language):
+    def language(self):
+        return self._bridge.language
+
+    def setLanguage(self, language):
         self._bridge.send_to_js("language", language)

@@ -26,7 +26,7 @@ CLASSIFIERS = [
 
 setup(
     name="monaco-qt",
-    version="0.1.1",
+    version="0.1.2",
     packages=find_packages(),
     install_requires=[
         'QtPy',
