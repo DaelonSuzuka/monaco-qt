@@ -5,7 +5,6 @@ app = BaseApplication()
 window = BaseMainWindow()
 
 monaco = MonacoWidget()
-monaco.setText('penis')
 monaco.textChanged.connect(print)
 
 with CVBoxLayout(window) as layout:

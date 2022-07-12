@@ -82,6 +82,7 @@ with open(index) as f:
     raw_html = f.read()
 
 class MonacoWidget(QWebEngineView):
+    initialized = Signal()
     textChanged = Signal(str)
 
     def __init__(self, parent=None):
@@ -98,6 +99,7 @@ class MonacoWidget(QWebEngineView):
         self.page().setWebChannel(self._channel)
         self._channel.registerObject("bridge", self._bridge)
 
+        self._bridge.initialized.connect(self.initialized)
         self._bridge.valueChanged.connect(lambda: self.textChanged.emit(self._bridge.value))
 
     def text(self):
