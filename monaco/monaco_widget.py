@@ -91,7 +91,8 @@ class MonacoWidget(QWebEngineView):
         html = raw_html.replace('width:400px;', f'width:{self.size().width()}px;')
         html = raw_html.replace('height:400px;', f'height:{self.size().height()}px;')
 
-        self.setHtml(html, QUrl.fromLocalFile(Path(__file__).parent / "index.html") )
+        filename = Path(__file__).parent / "index.html"
+        self.setHtml(html, QUrl.fromLocalFile(filename.as_posix()) )
 
         self._channel = QWebChannel(self)
         self._bridge = EditorBridge()
