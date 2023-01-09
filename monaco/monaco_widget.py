@@ -81,6 +81,12 @@ index = Path(__file__).parent / "index.html"
 with open(index) as f:
     raw_html = f.read()
 
+
+class MonacoPage(QWebEnginePage):
+    def javaScriptConsoleMessage(self, level, message, line, source):
+        pass
+
+
 class MonacoWidget(QWebEngineView):
     initialized = Signal()
     textChanged = Signal(str)
@@ -90,6 +96,9 @@ class MonacoWidget(QWebEngineView):
 
         html = raw_html.replace('width:400px;', f'width:{self.size().width()}px;')
         html = raw_html.replace('height:400px;', f'height:{self.size().height()}px;')
+
+        page = MonacoPage(parent=self)
+        self.setPage(page)
 
         filename = Path(__file__).parent / "index.html"
         self.setHtml(html, QUrl.fromLocalFile(filename.as_posix()) )
