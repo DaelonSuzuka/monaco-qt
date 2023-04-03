@@ -33,6 +33,11 @@ setup(
     ],
     package_data={'monaco': ['*.js', '*.html', 'monaco-editor/**']},
     include_package_data=True,
+    entry_points={
+        'pyinstaller40 ': [
+            'hook-dirs = monaco._pyinstaller_hooks_dir',
+        ]
+    },
     # setup_requires=[],
     # tests_require=[],
     platforms=["any"],
