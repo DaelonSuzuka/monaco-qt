@@ -53,7 +53,7 @@ ifeq ($(OS),Windows_NT)
 	VENV := $(VENV_DIR)/Scripts
 	PYTHON := python
 	VENV_PYTHON := $(VENV)/$(PYTHON)
-	RM := rd /s /q
+	RM := rm -rf
 else
 	VENV_DIR := $(VENV_NAME)
 	VENV := $(VENV_DIR)/bin
