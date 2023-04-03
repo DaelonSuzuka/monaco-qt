@@ -50,9 +50,9 @@ VENV_NAME := .venv
 
 ifeq ($(OS),Windows_NT)
 	VENV_DIR := $(VENV_NAME)
-	VENV := $(VENV_DIR)\Scripts
+	VENV := $(VENV_DIR)/Scripts
 	PYTHON := python
-	VENV_PYTHON := $(VENV)\$(PYTHON)
+	VENV_PYTHON := $(VENV)/$(PYTHON)
 	RM := rd /s /q
 else
 	VENV_DIR := $(VENV_NAME)
