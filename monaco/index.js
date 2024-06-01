@@ -2,10 +2,8 @@ var bridge = null;
 var editor = null;
 
 require.config({ paths: { 'vs': 'monaco-editor/min/vs' } });
-require(['vs/editor/editor.main'], function () {
+require(['vs/editor/editor.main'], () => {
     container = document.getElementById('container')
-    container.style.height = '98%'
-    container.style.width = '98%'
     editor = monaco.editor.create(container, {
         fontFamily: "Verdana",
         automaticLayout: true,
