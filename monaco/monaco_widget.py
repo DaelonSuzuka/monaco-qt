@@ -1,5 +1,5 @@
 from qtpy.QtCore import QObject, Signal, Slot, Property, QUrl
-from qtpy.QtWebEngineWidgets import * 
+from qtpy.QtWebEngineWidgets import *
 from qtpy.QtWebChannel import *
 
 from pathlib import Path
@@ -44,9 +44,9 @@ class EditorBridge(BaseBridge):
 
     def __init__(self, parent=None):
         super().__init__(parent=parent)
-        self._value = ""
-        self._language = ""
-        self._theme = ""
+        self._value = ''
+        self._language = ''
+        self._theme = ''
 
     def getValue(self):
         return self._value
@@ -70,13 +70,11 @@ class EditorBridge(BaseBridge):
         self.themeChanged.emit()
 
     value = Property(str, fget=getValue, fset=setValue, notify=valueChanged)
-    language = Property(
-        str, fget=getLanguage, fset=setLanguage, notify=languageChanged
-    )
+    language = Property(str, fget=getLanguage, fset=setLanguage, notify=languageChanged)
     theme = Property(str, fget=getTheme, fset=setTheme, notify=themeChanged)
 
 
-index = Path(__file__).parent / "index.html"
+index = Path(__file__).parent / 'index.html'
 
 with open(index) as f:
     raw_html = f.read()
@@ -100,14 +98,14 @@ class MonacoWidget(QWebEngineView):
         page = MonacoPage(parent=self)
         self.setPage(page)
 
-        filename = Path(__file__).parent / "index.html"
-        self.setHtml(html, QUrl.fromLocalFile(filename.as_posix()) )
+        filename = Path(__file__).parent / 'index.html'
+        self.setHtml(html, QUrl.fromLocalFile(filename.as_posix()))
 
         self._channel = QWebChannel(self)
         self._bridge = EditorBridge()
 
         self.page().setWebChannel(self._channel)
-        self._channel.registerObject("bridge", self._bridge)
+        self._channel.registerObject('bridge', self._bridge)
 
         self._bridge.initialized.connect(self.initialized)
         self._bridge.valueChanged.connect(lambda: self.textChanged.emit(self._bridge.value))
@@ -116,10 +114,16 @@ class MonacoWidget(QWebEngineView):
         return self._bridge.value
 
     def setText(self, text):
-        self._bridge.send_to_js("value", text)
+        self._bridge.send_to_js('value', text)
 
     def language(self):
         return self._bridge.language
 
     def setLanguage(self, language):
-        self._bridge.send_to_js("language", language)
+        self._bridge.send_to_js('language', language)
+
+    def theme(self):
+        return self._bridge.theme
+
+    def setTheme(self, theme):
+        self._bridge.send_to_js('theme', theme)
