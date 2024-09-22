@@ -27,7 +27,7 @@ reload: venv
 
 #
 build: venv
-	$(VENV_PYTHON) -m build
+	uv build
 
 #
 publish: venv
